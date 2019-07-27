@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -14,7 +15,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $task = Task::all();
+        return $task;
     }
 
     /**
@@ -35,9 +37,20 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $_POST = $request->json()->all();
+        $task = Task::create([
+            'id_user'=>  $_POST['id_user'],
+
+            'description'=> $_POST['description']
+        ]);
+
+        return $task;
     }
 
+    public function register(Request $request)
+    {
+        return view('TaskRegister');
+    }
     /**
      * Display the specified resource.
      *
@@ -46,7 +59,9 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        $task = Task::where('id', $id)->orderBy('id', 'desc')->get();
+
+        return $task;
     }
 
     /**
@@ -78,8 +93,12 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Task $task)
+    public function destroy(Task $task, $id)
     {
-        //
+       // $task = task::table('tasks')->get();
+        //return \View::make('home')->with('task',$task);
+        $task = task::where('id', $id)->delete();
+
+        return $task;
     }
 }

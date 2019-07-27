@@ -14,3 +14,9 @@
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+
+Route::get('/task', 'TaskController@index');
+Route::get('/task/{id}', 'TaskController@index');
+Route::post('/task', 'TaskController@store')->name('taskregister');
+Route::delete('/task/{id}', 'TaskController@delete');
