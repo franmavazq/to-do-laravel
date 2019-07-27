@@ -37,14 +37,26 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $_POST = $request->json()->all();
-        $task = Task::create([
-            'id_user'=>  $_POST['id_user'],
+        // $_POST = $request->json()->all();
+        // $return = $_POST;
+        // $task = Task::create([
+        //     'id_user'=>  $_POST['id_user'],
+        //     'description'=> $_POST['description']
+        // ]);
 
-            'description'=> $_POST['description']
+
+
+
+        $validatedData = $request->validate([
+            'id_user' => 'required|max:255',
+            'description' => 'required|max:255'
         ]);
+        $task = Task::create($validatedData);
+        return redirect('/home')->with('success', 'La tarea ha sido agregada exitosamente, por favor actualiza la pagina para visualizar');
 
-        return $task;
+
+
+        // return $task;
     }
 
     public function register(Request $request)
@@ -99,6 +111,6 @@ class TaskController extends Controller
         //return \View::make('home')->with('task',$task);
         $task = task::where('id', $id)->delete();
 
-        return $task;
+        return redirect('/home')->with('success', 'La tarea ha sido eliminada exitosamente, por favor actualiza la pagina para visualizar');
     }
 }
